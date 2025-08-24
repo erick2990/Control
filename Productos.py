@@ -48,7 +48,7 @@ class Productos:
     def __str__(self):
         return (
             f"Producto: {self.__nombre_producto} | Código: {self.__id_producto} | "
-            f"Categoría: {self.__id_categoria} | Precio: Q{self.__precio} | "
+            f"Categoría: {self.__id_categoria} | Precio Venta: Q{self.__precio_venta} | Precio Compra:Q{self.__precio_compra} "
             f"Compras: {self.__t_compras} | Ventas: {self.__t_ventas} | Stock: {self.__stock}"
         )
 
@@ -56,56 +56,109 @@ class Productos:
 class GestionProductos:
 
     def __init__(self):
-        lista_generalP = {} #Se guardaran todos los prodcutos en general
+        self.lista_generalP = {}  # Diccionario para almacenar productos
+
 
     def agregar_productos(self):
         fin_agregaar =  True
         cantidad = 1
         print('Bienvenido a agregar productos: ')
         while fin_agregaar:
-            print(f'\t\t\tAgregue el {cantidad} producto: ')
-            while True:
-                id_producto = input('Ingrese el ID: ')
-                if id_producto == "":
-                    print('Por favor ingrese un dato valido')
-                else:
-                    break
-            while True:
-                nombre_producto = input('Ingrese le nombre: ')
-                if nombre_producto =="":
-                    print('Por favor ingrese un dato valido')
-                else:
-                    break
-            while True:
-                id_categoria = input('Ingrese la categoria ')
-                if id_categoria == "":
-                    print('Por favor ingrese un dato valido')
-                else:
-                    break
-            while True:
-                try:
-                    precio_producto_compra = float(input('Ingrese el precio de compra en Q.'))
-                    if precio_producto_compra<=0:
-                        print('El precio de compra debe ser mayor a 0')
+            try:
+                print(f'\t\t\tAgregue el {cantidad} producto: ')
+                while True:
+                    id_producto = input('Ingrese el ID: ')
+                    if id_producto == "":
+                        print('Por favor ingrese un dato valido')
+                    elif id_producto in self.lista_generalP:
+                        print('El código ya existe no se permiten duplicados')
                     else:
                         break
-                except Exception as e:
-                    print('Ocurrio un error por favor vuelva a intentarlo')
-            while True:
-                try:
-                    precio_producto_venta = float(input('Ingrese el precio de venta en Q.'))
-                    if precio_producto_venta>0 and precio_producto_venta>precio_producto_compra:
-                        #Aqui debe cumplirse que el precio debe ser mayor a 0 y tambien debe sacarle una ganancia
-                        break
+                while True:
+                    nombre_producto = input('Ingrese el nombre: ')
+                    if nombre_producto == "":
+                        print('Por favor ingrese un dato valido')
                     else:
-                        print('El precio de venta debe ser mayor que el de venta y  debe ser mayor a 0')
+                        break
+                while True:
+                    id_categoria = input('Ingrese la categoria ')
+                    if id_categoria == "":
+                        print('Por favor ingrese un dato valido')
+                    else:
+                        break
+                while True:
+                    try:
+                        precio_producto_compra = float(input('Ingrese el precio de compra en Q.'))
+                        if precio_producto_compra <= 0:
+                            print('El precio de compra debe ser mayor a 0')
+                        else:
+                            break
+                    except Exception as e:
+                        print('Ocurrio un error por favor vuelva a intentarlo')
+                while True:
+                    try:
+                        precio_producto_venta = float(input('Ingrese el precio de venta en Q.'))
+                        if precio_producto_venta > 0 and precio_producto_venta > precio_producto_compra:
+                            # Aqui debe cumplirse que el precio debe ser mayor a 0 y tambien debe sacarle una ganancia
+                            break
+                        else:
+                            print('El precio de venta debe ser mayor que el de compra y mayor a 0')
 
-                except Exception as e:
-                    print('Ocurrio un error por favor vuelva a intentarlo')
-            while True:
-                try:
+                    except Exception as e:
+                        print('Ocurrio un error por favor vuelva a intentarlo')
+                while True:
+                    try:
+                        total_compras = int(input('Ingrese cuantas unidades se compraron: '))
+                        if total_compras > 0:
+                            print(
+                                'El TOTAL DE VENTAS acutalmente es asignado como 0 ya que el producto se ingreso recientemente')
+                            stock = total_compras
+                            print('El STOCK ACTUAL ES EL MISMO NUMERO DE COMPRAS')
+                            break
+                        else:
+                            print('Las compras deben ser como minimo de 1 unidad')
 
+                    except Exception as e:
+                        print('Ocurrio un error en la entrada por favor verificar')
+                # Objeto creado de manera temporal para guardarse
+                producto_tmp = Productos(id_producto, nombre_producto, id_categoria, precio_producto_compra,precio_producto_venta, total_compras, 0, stock)
+                self.lista_generalP[id_producto] = {
+                    "Articulo" : producto_tmp
+                }
+            except Exception as e:
+                print('Ocurrio un error por favor vuelva a intentarlo')
 
+            respuesta = input("¿Desea agregar otro producto? (S/N): ").strip().upper() #Si el usuario desea ingresar otro producto
+            if respuesta != "S":
+                print('\t\t\t¡¡¡Productos agregados con exito!!!')
+                fin_agregaar = False
+            else:
+                cantidad += 1
+
+    #este metodo sirve para actualizar los precios de venta al mercado
+    def actualizar_precio_venta(self, id_producto, nuevo_precio):
+        producto = self.lista_generalP.get(id_producto) #recibe el id del producto a actualizar precio venta
+        if producto and nuevo_precio > 0 and nuevo_precio>producto["Articulo"].get_precio_compra():
+            producto["Articulo"].set_precio_venta(nuevo_precio)
+            print("Precio actualizado.")
+        else:
+            print("No se pudo actualizar el precio.")
+
+    #Este metodo actualiza los costos del producto si cambia segun el proveedor
+    def actualizar_precio_compra(self, id_producto, nuevo_precio):
+        producto = self.lista_generalP.get(id_producto) #recube el id del producto a actualizar precio compra
+        if producto and nuevo_precio>0:
+            producto["Articulo"].set_precio_compra(nuevo_precio)
+            print("Precio de compra actualizado")
+        else:
+            print('No se puede actualizar el precio')
+    def actualizar_stock(self, id_producto, nuevo_stock):
+        producto = self.lista_generalP.get(id_producto)
+        if producto and nuevo_stock>0:
+            producto["Articulo"].set_stock(nuevo_stock)
+            print('Stock actualizado')
+        else:
+            print('No se puede actualizar el stock')
 
 
 
