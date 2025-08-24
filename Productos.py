@@ -60,7 +60,8 @@ class GestionProductos:
 
     #Este metodo requiere el gestor de categorias para ser vinculado
     #desde aqui se trata como de manera generalizada del otro lado se envia el gestor principal
-    def agregar_productos(self, gestor_categoria):
+    #aqui entonces cada uno de estos se enviara y va a tratarse como esta instruido en sus archivos fuente
+    def agregar_productos(self, gestor_categoria, gestor_proveedores):
         fin_agregar =  True
         cantidad = 1
         print('Bienvenido a agregar productos: ')
@@ -123,6 +124,7 @@ class GestionProductos:
                         print('Ocurrio un error en la entrada por favor verificar')
                 # Objeto creado de manera temporal para guardarse
                 producto_tmp = Productos(id_producto, nombre_producto, id_categoria, precio_producto_compra,precio_producto_venta, total_compras, 0, stock)
+                #Aqui se guarda en la categoria que corresponde
                 gestor_categoria.agregar_producto_a_categoria(id_categoria, producto_tmp) #Aqui se vincula con las categorias se envia el id y el objeto
                 self.lista_generalP[id_producto] = {
                     "Articulo" : producto_tmp

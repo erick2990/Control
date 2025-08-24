@@ -26,6 +26,9 @@ class GestionCategorias:
     def __init__(self):
         self.__categorias = {}  # Diccionario para productos que coinciden con dicha categoria
 
+    def get_categorias(self):
+        return self.__categorias
+
     def agregar_categoria(self):
         fin_cat = True
         print('\t\t\tBienvenido a agregar categorías: ')

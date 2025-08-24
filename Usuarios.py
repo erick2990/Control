@@ -46,14 +46,18 @@ class LoginAdmin:
 
         while True:
             print('\n--- Menú Administrador ---')
-            print('1. Agregar productos\n2. Registrar compra\n3. Ver historial de compras')
+            print('1. Agregar categorias\n2. Registrar compra\n3. Ver historial de compras')
             print('4. Agregar proveedor\n5. Ver historial de compras\n6. Salir')
             opcion = int(input("Seleccione una opción: "))
             match opcion:
                 case 1:
-                    gestor_productos.agregar_productos(gestor_categorias)
+                    gestor_categorias.agregar_categorias()
                 case 2:
-                    compras.realizar_compra()
+                    if not gestor_categorias.get_categorias():
+                        print('No se pueden realizar compras aún')
+                    else:
+                        compras.realizar_compra()
+
                 case 3:
                     compras.mostrar_historial()
                 case 4:
