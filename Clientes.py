@@ -1,6 +1,5 @@
 from enum import nonmember
 
-
 class Clientes:
 
     def __init__(self, nit , nombre_cliente, cel, direccion, correo ):
@@ -35,4 +34,12 @@ class Clientes:
             print('Direccion actualizada con exito')
         else:
             print('La direccion coincide con la anterior por favor intente de nuevo')
+
+class GestionClientes:
+
+    def __init__(self):
+        self.listado_clientes = {} #Lista general de los clientes
+
+    def agregar_clientes(self):
+        print('Logica para añadir un nuevo cliente')
 

@@ -60,10 +60,10 @@ class GestionProductos:
 
 
     def agregar_productos(self):
-        fin_agregaar =  True
+        fin_agregar =  True
         cantidad = 1
         print('Bienvenido a agregar productos: ')
-        while fin_agregaar:
+        while fin_agregar:
             try:
                 print(f'\t\t\tAgregue el {cantidad} producto: ')
                 while True:
@@ -131,7 +131,7 @@ class GestionProductos:
             respuesta = input("¿Desea agregar otro producto? (S/N): ").strip().upper() #Si el usuario desea ingresar otro producto
             if respuesta != "S":
                 print('\t\t\t¡¡¡Productos agregados con exito!!!')
-                fin_agregaar = False
+                fin_agregar = False
             else:
                 cantidad += 1
 
@@ -159,11 +159,3 @@ class GestionProductos:
             print('Stock actualizado')
         else:
             print('No se puede actualizar el stock')
-
-
-
-
-
-
-
-
