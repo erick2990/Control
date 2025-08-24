@@ -2,6 +2,7 @@ class Compras:
     def __init__(self, id_compras, fecha, id_proveedor, id_empleado, total):
         self.__id_compras = id_compras
         self.__fecha = fecha
+        self.nit = nit
         self.__id_proveedor = id_proveedor
         self.__id_empleado = id_empleado
         self.__total = total
