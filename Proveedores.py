@@ -94,9 +94,7 @@ class GestionProveedores:
     def asociar_categorias(self, id_prov , id_cat):
         proveedor = self.listado_proveedores[id_prov]["Proveedor"] #obtiene el objeto guardado en este diccionario
         cat_ascociadas = proveedor.listado_categorias
-        cat_ascociadas[id_prov] = {
-            "Distribucion" : id_cat
-        } #con la llace del id del proveedor se guarda la categoria que distribuye
+        cat_ascociadas[id_cat] = "Distribuido"
         print('¡¡¡Categoría asociada con exito!!!')
 
 

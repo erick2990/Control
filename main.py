@@ -2,8 +2,7 @@ from Usuarios import Admin, LoginAdmin
 from Productos import GestionProductos
 from Proveedores import GestionProveedores
 from Categorias import GestionCategorias
-
-from Compras import DettalesCompras
+from Compras import DetallesCompras
 
 class Datos:
     def __init__(self, nombre_em, direccion):

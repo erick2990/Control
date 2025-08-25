@@ -1,5 +1,5 @@
 class Productos:
-    def __init__(self,id_p, nombre_p, id_cat, precio_compra, precio_venta, t_compras, t_ventas, stock):
+    def __init__(self,id_p, nombre_p, id_cat, precio_compra, precio_venta, t_compras, t_ventas, stock, sub_total):
         self.__id_producto = id_p
         self.__nombre_producto = nombre_p
         self.__id_categoria = id_cat
@@ -142,8 +142,6 @@ class GestionProductos:
                     try:
                         total_compras = int(input('Ingrese cuantas unidades se compraron: '))
                         if total_compras > 0:
-                            print(
-                                'El TOTAL DE VENTAS acutalmente es asignado como 0 ya que el producto se ingreso recientemente')
                             stock = total_compras
                             print('El STOCK ACTUAL ES EL MISMO NUMERO DE COMPRAS')
                             break
@@ -168,8 +166,10 @@ class GestionProductos:
                             print('Esta categoria no coincide por favor verifique la entrada')
                     except:
                         print('Error - por favor verifique la entrada')
+
+                sub_total = precio_producto_compra * stock
                 # Objeto creado de manera temporal para guardarse
-                producto_tmp = Productos(id_producto, nombre_producto, id_categoria, precio_producto_compra,precio_producto_venta, total_compras, 0, stock)
+                producto_tmp = Productos(id_producto, nombre_producto, id_categoria, precio_producto_compra,precio_producto_venta, total_compras, 0, stock, sub_total)
                 #Aqui se guarda en la categoria que corresponde
                 gestor_categoria.agregar_producto_a_categoria(id_categoria, producto_tmp) #Aqui se vincula con las categorias se envia el id y el objeto
                 self.lista_generalP[id_producto] = {

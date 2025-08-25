@@ -1,5 +1,5 @@
 import getpass
-from Compras import DettalesCompras
+from Compras import DetallesCompras
 
 
 class Admin:
@@ -30,17 +30,14 @@ class LoginAdmin:
                 else:
                     intentos -=1
                     print(f'Le quedan {intentos}')
-
-
             except Exception as e:
                 print('Error por favor verifique la entrada')
-
         print('Se terminaron los intentos validos')
 
     #Este menu sirve solo para el admin donde requiere el metodo de gestionar productos y proveedores en este ambito
     # compras se vuelve en la accion de interaccion entre detalles compras por medio de la gestion de producos
     def menu(self, gestor_productos, gestor_proveedores, gestor_categorias):
-        compras = DettalesCompras(gestor_productos, gestor_categorias, gestor_proveedores)
+        compras = DetallesCompras(gestor_productos, gestor_categorias, gestor_proveedores)
         #Es necesario enviar estos dos argumentos para que pueda manipularse tanto el gestor de productos
         #como el gestor de proveedores
 
@@ -59,7 +56,7 @@ class LoginAdmin:
                     elif not gestor_proveedores.get_proveedores():
                         print('No se pueden realizar compras aún, se necesitan registros de proveedores')
                     else:
-                        compras.realizar_compra(gestor_productos, gestor_proveedores, gestor_categorias)
+                        compras.realizar_compra()
 
                 case 3: #Historial de compras
                     compras.mostrar_historial()
