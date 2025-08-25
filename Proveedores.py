@@ -26,6 +26,8 @@ class GestionProveedores:
 
     def __init__(self):
         self.listado_proveedores = {} #Este es el listado de proveedores
+    def get_proveedores(self):
+        return self.listado_proveedores
 
 
     def agregar_proveedor(self):
@@ -36,7 +38,7 @@ class GestionProveedores:
         while fin_prov:
             try:
                 while True:
-                    id_proveedor = input('Ingrese el ID')
+                    id_proveedor = input('Ingrese el ID: ')
                     if id_proveedor in self.listado_proveedores:
                         print('Este ID ya fue asignado por favor intente con uno nuevo')
                     elif id_proveedor == "":
@@ -68,14 +70,14 @@ class GestionProveedores:
                     else:
                         break
                 while True:
-                    correo_p = input('Ingrese el correo electrónico')
+                    correo_p = input('Ingrese el correo electrónico: ')
                     if correo_p =="":
                         print('Este campo no puede estar vació')
                     else:
                         break
                 proveedor_tmp = Proveedor(id_proveedor, nombre_p, empresa_p, cel_p, dir_p, correo_p)
                 self.listado_proveedores[id_proveedor] = {
-                    "Proveedor" : proveedor_tmp
+                    "Proveedor" : proveedor_tmp #se agrega al diccionario de proveedores por medio de un objeto
                 }
 
             except Exception as e:
@@ -89,20 +91,13 @@ class GestionProveedores:
             else:
                 pass
 
-    def asociar_categorias(self, id_prov ,cantidad):
-        proveedor = self.listado_proveedores[id_prov]["Proveedor"]
+    def asociar_categorias(self, id_prov , id_cat):
+        proveedor = self.listado_proveedores[id_prov]["Proveedor"] #obtiene el objeto guardado en este diccionario
         cat_ascociadas = proveedor.listado_categorias
-
-        for i in range(1, cantidad + 1):
-            print(f'Ingrese la {i}ª categoría:')
-            cat_id = input('Ingresa el ID de la categoría que deseas asociar: ').strip()
-            cat_nombre = input('Ingresa el nombre de la categoría: ').strip()
-
-            if cat_id in cat_ascociadas:
-                print('Esta categoria ya se asocio con el proveedor ')
-            else:
-                cat_ascociadas[cat_id] = cat_nombre
-                print('¡¡¡Categoría asociada con exito!!!')
+        cat_ascociadas[id_prov] = {
+            "Distribucion" : id_cat
+        } #con la llace del id del proveedor se guarda la categoria que distribuye
+        print('¡¡¡Categoría asociada con exito!!!')
 
 
 

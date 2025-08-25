@@ -1,6 +1,4 @@
 import getpass
-from Productos import GestionProductos
-from Proveedores import GestionProveedores
 from Compras import DettalesCompras
 
 
@@ -42,7 +40,9 @@ class LoginAdmin:
     #Este menu sirve solo para el admin donde requiere el metodo de gestionar productos y proveedores en este ambito
     # compras se vuelve en la accion de interaccion entre detalles compras por medio de la gestion de producos
     def menu(self, gestor_productos, gestor_proveedores, gestor_categorias):
-        compras = DettalesCompras(gestor_productos)
+        compras = DettalesCompras(gestor_productos, gestor_categorias, gestor_proveedores)
+        #Es necesario enviar estos dos argumentos para que pueda manipularse tanto el gestor de productos
+        #como el gestor de proveedores
 
         while True:
             print('\n--- Menú Administrador ---')
@@ -50,17 +50,20 @@ class LoginAdmin:
             print('4. Agregar proveedor\n5. Ver historial de compras\n6. Salir')
             opcion = int(input("Seleccione una opción: "))
             match opcion:
-                case 1:
-                    gestor_categorias.agregar_categorias()
-                case 2:
-                    if not gestor_categorias.get_categorias():
-                        print('No se pueden realizar compras aún')
-                    else:
-                        compras.realizar_compra()
+                case 1: #Agregar categorias
+                    gestor_categorias.agregar_categoria()
+                case 2: #Registrar compras
+                    if not gestor_categorias.get_categorias(): #Si categorias o proveedores esta vacio no se puede hacer una compra
+                        print('No se pueden realizar compras aún, se necesitan registros de categorias')
 
-                case 3:
+                    elif not gestor_proveedores.get_proveedores():
+                        print('No se pueden realizar compras aún, se necesitan registros de proveedores')
+                    else:
+                        compras.realizar_compra(gestor_productos, gestor_proveedores, gestor_categorias)
+
+                case 3: #Historial de compras
                     compras.mostrar_historial()
-                case 4:
+                case 4: #Agregar proveedores
                     gestor_proveedores.agregar_proveedor()
                 case 5:
                     id_prov = input("Ingrese el ID del proveedor: ")

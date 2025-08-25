@@ -62,6 +62,7 @@ def menu_principal(empresa):
                    if administrador.inicio_sesion():
                        print('Ingreso de forma correcta')
                        administrador.menu(gestor_productos, gestor_proveedores, gestor_categorias)
+                       #Estos datos son sobre los que se trabajara, la manipulacion s eejecutara en otros archivos
 
                    else:
                        print('Intente más tarde')
@@ -79,7 +80,7 @@ def menu_principal(empresa):
                    print("Opción inválida. Intente nuevamente.")
 
        except Exception as e:
-           print('Error por favor vuelva a intentarlo')
+           print(f'Error por favor vuelva a intentarlo {e}')
 
 empresa_registrada = registrar_empresa()
 menu_principal(empresa_registrada)

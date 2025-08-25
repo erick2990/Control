@@ -43,7 +43,8 @@ class Productos:
 
     def set_stock(self, nuevo_stock):
         if nuevo_stock >= 0:
-            self.__stock = nuevo_stock
+            self.__stock += nuevo_stock
+
 
     def __str__(self):
         return (
@@ -61,7 +62,7 @@ class GestionProductos:
     #Este metodo requiere el gestor de categorias para ser vinculado
     #desde aqui se trata como de manera generalizada del otro lado se envia el gestor principal
     #aqui entonces cada uno de estos se enviara y va a tratarse como esta instruido en sus archivos fuente
-    def agregar_productos(self, gestor_categoria, gestor_proveedores):
+    def agregar_productos(self, gestor_categoria, gestor_proveedor):
         fin_agregar =  True
         cantidad = 1
         print('Bienvenido a agregar productos: ')
@@ -69,25 +70,54 @@ class GestionProductos:
             try:
                 print(f'\t\t\tAgregue el {cantidad} producto: ')
                 while True:
-                    id_producto = input('Ingrese el ID: ')
+                    id_producto = input('Ingrese el ID: ') #añadir ID del producto
                     if id_producto == "":
                         print('Por favor ingrese un dato valido')
                     elif id_producto in self.lista_generalP:
-                        print('El código ya existe no se permiten duplicados')
+                        respuesta = input('El código ya existe ¿desea ingresar una compra de este producto?').upper()
+                        if respuesta == "S":
+                            cat_recibida = input('Ingrese la categoria a la que pertenece este producto')
+                            while True:
+                                try:
+                                    cantidad_recibida = int(input('Ingrese cuantas unidades ingresaron'))
+                                    if cantidad_recibida>0:
+                                        self.actualizar_stock(id_producto, cantidad_recibida)
+                                        #Aqui se envia la actualizacion a estas dos ramas que controlan la existencia de  los productos
+                                        gestor_categoria.modificar_stock_producto(cat_recibida, id_producto, cantidad_recibida)
+                                        break
+                                    else:
+                                        print('La cantidad recibida debe ser mayor a 0')
+                                except Exception as e:
+                                    print('Error por favor intentelo de nuevo')
+                            fin_agregar = False #se termina el ciclo de agregar porque solo fue una actualizacion al stock
+                            break #Termiana este pequeño ciclo
+
+
+
+                        else:
+                            print('Proceso finalizado')
+                            fin_agregar = False
                     else:
                         break
                 while True:
-                    nombre_producto = input('Ingrese el nombre: ')
+                    nombre_producto = input('Ingrese el nombre: ') #nombre del producto
                     if nombre_producto == "":
                         print('Por favor ingrese un dato valido')
                     else:
                         break
                 while True:
+                    print('Guia de categorias: ') #guia de categorias que tiene de opcion para elegir
+                    for x in gestor_categoria.get_categrorias.values():
+                        print(x)
+
                     id_categoria = input('Ingrese la categoria ')
                     if id_categoria == "":
                         print('Por favor ingrese un dato valido')
-                    else:
+                    elif id_categoria in gestor_categoria.get_categrorias.values:
                         break
+                    else:
+                        print('Esta categoria no coincide por favor verifique la entrada')
+
                 while True:
                     try:
                         precio_producto_compra = float(input('Ingrese el precio de compra en Q.'))
@@ -122,6 +152,22 @@ class GestionProductos:
 
                     except Exception as e:
                         print('Ocurrio un error en la entrada por favor verificar')
+                while True:
+                    try:
+                        print('Guia de proveedores: ')  # guia de proveedores que tiene de opcion para elegir
+                        for x in gestor_categoria.get_categrorias.values():
+                            print(x)
+                        #Aqui se realiza la union de la categoria con el proveedor
+                        id_prov = input('Ingrese la categoria ')
+                        if id_prov == "":
+                            print('Por favor ingrese un dato valido')
+                        elif id_prov in gestor_proveedor.get_proveedores():
+                            gestor_proveedor.asociar_categorias(id_prov, id_categoria)
+                            break
+                        else:
+                            print('Esta categoria no coincide por favor verifique la entrada')
+                    except:
+                        print('Error - por favor verifique la entrada')
                 # Objeto creado de manera temporal para guardarse
                 producto_tmp = Productos(id_producto, nombre_producto, id_categoria, precio_producto_compra,precio_producto_venta, total_compras, 0, stock)
                 #Aqui se guarda en la categoria que corresponde

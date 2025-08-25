@@ -24,10 +24,9 @@ class Categorias:
 class GestionCategorias:
 
     def __init__(self):
-        self.__categorias = {}  # Diccionario para productos que coinciden con dicha categoria
-
+        self.categorias = {}  # Diccionario para productos que coinciden con dicha categoria
     def get_categorias(self):
-        return self.__categorias
+        return self.categorias
 
     def agregar_categoria(self):
         fin_cat = True
@@ -38,7 +37,7 @@ class GestionCategorias:
                     id_cat = input('Ingrese el ID de la categoria: ')
                     if id_cat =="":
                         print('Debe ingresar un dato valido')
-                    elif id_cat in self.__categorias:
+                    elif id_cat in self.categorias:
                         print('Este ID de categoria ya existe, intente con otro')
                     else:
                         break
@@ -49,7 +48,7 @@ class GestionCategorias:
                     else:
                         break
                 categoria_tmp  = Categorias(id_cat, nombre_cat) #Objeto tipo categoria
-                self.__categorias[id_cat] = {
+                self.categorias[id_cat] = {
                     "Categoria":categoria_tmp
                 }
             except Exception as e:
@@ -57,14 +56,16 @@ class GestionCategorias:
 
             respuesta = input("¿Desea agregar otra categoria? (S/N): ").strip().upper()  # Si el usuario desea ingresar otra categoria
             if respuesta != "S":
-                print('\t\t\t¡¡¡Productos agregados con exito!!!')
+                print('\t\t\t¡¡¡Categorias agregados con exito!!!')
                 fin_cat= False
             else:
                pass
 
-    def agregar_producto_a_categoria(self, id_cat, id_producto, nombre_producto):
-        if id_cat in self.__categorias:
-            categoria = self.__categorias[id_cat]["Categoria"] #Aqui se invoca el diccionario de productos de dicho id
+    def agregar_producto_a_categoria(self, id_cat, nombre_producto):
+        id_producto = nombre_producto.get_id_producto()
+
+        if id_cat in self.categorias:
+            categoria = self.categorias[id_cat]["Categoria"] #Aqui se invoca el diccionario de productos de dicho id
             articulos = categoria.get_articulos() #Esto lo devuelve del diccionario de articulos que tiene contenido
             if id_producto in articulos:
                 print("Este producto ya existe en la categoría.")
@@ -73,3 +74,10 @@ class GestionCategorias:
                 print(f'Producto "{nombre_producto}" agregado a la categoría "{categoria.get_nombre_cat()}".')
         else:
             print("La categoría no existe.")
+
+    def modificar_stock_producto(self, id_cat, id_producto, stock):
+        categoria = self.categorias[id_cat]["Categoria"] #aqui tomara el valor de dicha categoria
+        articulos  = categoria.get_articulos()
+        producto = articulos[id_producto] # aqui se vincula el aritulo guardado desde la categoria
+        producto.set_stock(stock) #Se cambia el stock que existe dentro del diccionario de categorias
+

@@ -30,56 +30,19 @@ class Compras:
 class DettalesCompras:
 
 
-    def __init__(self, gestor_productos):
+    def __init__(self, gestor_productos, gestor_categorias, gestor_proveedores):
         self.listado_compras = {} #este diccionario es para guardar todas las compras relacionadas por ID
         self.gestor_productos = gestor_productos
+        self.gestor_categorias = gestor_categorias
+        self.gestor_proveedores = gestor_proveedores
 
-    def realizar_compra(self):
+    def realizar_compra(self, gestor_productos, gestor_proveedores, gestor_categorias):
         fecha_actual = date.today()
-
         fin_ingresoC = True
         while fin_ingresoC:
             try:
 
-                while True:
-                    id_compra = input('Ingrese el numero de compra')
-                    if id_compra in self.listado_compras:
-                        print('Este ID ya existe en el historial de compras')
-                    elif id_compra =="":
-                        print('Este campo no puede quedar vacio')
-                    else:
-                        break
-
-                id_producto = input("Ingrese el ID del producto: ").strip()
-                producto_total = self.gestor_productos.lista_generalP.get(id_producto)
-
-                if not producto_total:
-                    print("Producto no encontrado.")
-                    return
-
-                producto = producto_total["Articulo"] #Si el arcitulo si existe entonces pasa
-
-                try:
-                    cantidad = int(input("Ingrese la cantidad comprada: "))
-                    if cantidad <= 0:
-                        print("La cantidad debe ser mayor a cero.")
-                        return
-                except ValueError:
-                    print(" Error entrada inválida. Debe ingresar un número entero.")
-                    return
-
-                # Actualizar stock y compras
-                nuevo_stock = producto.get_stock() + cantidad #al crearse el producto o si ya existe se actualiza el stock
-                producto.set_stock(nuevo_stock) #se setea el stock
-                producto._Productos__t_compras += cantidad  # acceso directo si no hay setter
-
-                # Crear y guardar la compra
-                compra_tmp = Compras(id_compra, fecha_actual, producto, cantidad)
-                self.listado_compras[id_compra] = compra_tmp
-
-                print(f"✅ Compra registrada exitosamente. Nuevo stock: {nuevo_stock}")
-
-
+                gestor_productos.agregar_productos(gestor_categorias, gestor_proveedores)
             except Exception as e:
                 print('Error - por favor verifique la entrada')
 
